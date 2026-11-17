@@ -2,16 +2,21 @@ import { useEffect, useRef, useState } from "react";
 import { CAKES } from "../products";
 import { useI18n } from "../i18n";
 
+/** Scroll height (vh) per cake — longer = more time centered and sharp. */
 function usePinUnit() {
-  const [unit, setUnit] = useState(100);
+  const [unit, setUnit] = useState(130);
   useEffect(() => {
-    const sync = () => setUnit(window.matchMedia("(max-width: 768px)").matches ? 72 : 100);
+    const sync = () =>
+      setUnit(window.matchMedia("(max-width: 768px)").matches ? 95 : 130);
     sync();
     window.addEventListener("resize", sync);
     return () => window.removeEventListener("resize", sync);
   }, []);
   return unit;
 }
+
+/** Stay fully sharp until this distance from center, then ease into blur. */
+const SHARP_HOLD = 0.42;
 
 export default function CakeShop() {
   const { t, lang } = useI18n();
@@ -62,12 +67,15 @@ export default function CakeShop() {
             {CAKES.map((cake, i) => {
               const distance = float - i;
               const abs = Math.abs(distance);
-              const focus = Math.max(0, 1 - Math.min(1.35, abs));
-              const scale = 0.58 + focus * 0.42;
-              const blur = Math.min(18, abs * 12);
-              const opacity = Math.max(0.22, 0.35 + focus * 0.65);
+              // Plateau: no blur while abs < SHARP_HOLD, then ease-in to soft
+              const leave = Math.max(0, Math.min(1, (abs - SHARP_HOLD) / (1 - SHARP_HOLD)));
+              const soft = leave * leave;
+              const focus = 1 - soft;
+              const scale = 0.62 + focus * 0.38;
+              const blur = soft * 16;
+              const opacity = Math.max(0.2, 0.28 + focus * 0.72);
               // Neighbors stay in frame, peeking above/below the sharp center
-              const y = distance * (pinUnit < 90 ? -18 : -26);
+              const y = distance * (pinUnit < 110 ? -16 : -24);
               const z = Math.round(focus * 10);
 
               return (

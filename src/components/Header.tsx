@@ -19,7 +19,7 @@ export default function Header() {
     <>
       <div className="topbar">{t.topbar}</div>
       <header className="header">
-        <a href="/" className="logo">
+        <a href={import.meta.env.BASE_URL} className="logo">
           <span className="logo-text">{t.brand}</span>
           <span className="logo-subtitle">{t.tagline}</span>
         </a>

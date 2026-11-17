@@ -7,6 +7,9 @@ export type CakeProduct = {
   image: string;
 };
 
+const cake = (file: string) =>
+  `${import.meta.env.BASE_URL}cakes/${file}`.replace(/([^:]\/)\/+/g, "$1");
+
 export const CAKES: CakeProduct[] = [
   {
     id: "nube-frutos",
@@ -14,7 +17,7 @@ export const CAKES: CakeProduct[] = [
     tag: { en: "Season edit", es: "Edición de temporada" },
     price: 42,
     servings: "Ø 18 · 8",
-    image: "/cakes/berry.png",
+    image: cake("berry.png"),
   },
   {
     id: "cacao-seda",
@@ -22,7 +25,7 @@ export const CAKES: CakeProduct[] = [
     tag: { en: "Classic", es: "Clásico" },
     price: 46,
     servings: "Ø 18 · 8",
-    image: "/cakes/cacao.png",
+    image: cake("cacao.png"),
   },
   {
     id: "limon-miel",
@@ -30,7 +33,7 @@ export const CAKES: CakeProduct[] = [
     tag: { en: "Bright", es: "Luminoso" },
     price: 40,
     servings: "Ø 16 · 6",
-    image: "/cakes/lemon.png",
+    image: cake("lemon.png"),
   },
   {
     id: "pistacho",
@@ -38,6 +41,6 @@ export const CAKES: CakeProduct[] = [
     tag: { en: "Soft green", es: "Verde suave" },
     price: 48,
     servings: "Ø 18 · 8",
-    image: "/cakes/pistachio.png",
+    image: cake("pistachio.png"),
   },
 ];
